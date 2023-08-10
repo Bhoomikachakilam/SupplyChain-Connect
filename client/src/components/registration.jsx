@@ -51,6 +51,7 @@ const RegistrationForm = () => {
       if (response.status === 201) {
         console.log("Registration successful");
         setName("");
+        setEmail("");
         setAddress("");
         setPhoneNumber("");
         setRole("");

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios"; // Import the axios library
+import axios from "axios"; 
 
 const Loginform = () => {
-  const base_url = "http://localhost:5000"; // Replace with your backend URL
-  const [email, setEmail] = useState("");
+  const base_url = "http://localhost:5000"; 
+  const [email,setEmail]=useState("")
   const [password, setPassword] = useState("");
 
   const handleEmailChange = (event) => {
@@ -26,7 +26,7 @@ const Loginform = () => {
       const response = await axios.post(`${base_url}/login`, loginData);
 
       if (response.status === 200) {
-        console.log("Login successful");
+         localStorage.setItem("Token",response.data.accessToken);
         setEmail("")
         setPassword("")
       } else {

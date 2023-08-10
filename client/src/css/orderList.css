@@ -1,0 +1,25 @@
+.order-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .order-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  .order-card p {
+    margin: 8px 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
