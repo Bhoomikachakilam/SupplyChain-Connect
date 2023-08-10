@@ -19,7 +19,7 @@ app.use(orderrouter);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://supply-chain-connect.vercel.app/",
     methods: ["GET", "POST"],
   },
 });
@@ -43,8 +43,7 @@ io.on("connection", (socket) => {
       };
       chat.messages.push(newMessage);
       await chat.save();
-  
-      // Broadcast the message to the room
+
       io.to(data.room).emit("receive_message", newMessage);
   
       console.log("Message sent and saved:", newMessage);

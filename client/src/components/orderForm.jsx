@@ -125,7 +125,7 @@ import "../css/orderForm.css";
 
 const ManufacturerOrderForm = () => {
   const navigate = useNavigate();
-  const base_url = "http://localhost:5000";
+  const base_url = "https://supplychain-connect.onrender.com";
   const token = localStorage.getItem("Token");
   const decodedToken = jwtDecode(token);
   const pickupAddress = decodedToken.address;
