@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
-import axios from "axios"
-
-function Chat({ socket, username, room }) {
-  const base_Url="http://localhost:5000"
+import axios from "axios";
+import "../css/chat.css";
+function Chat({ socket, userName, room }) {
+  const base_Url = "http://localhost:5000";
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-console.log(room)
+  
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return new Intl.DateTimeFormat("en-US", options).format(date);
+  };
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const messageData = {
         room: room,
-        sender: username,
+        sender: userName,
         content: currentMessage,
-        timestamp: new Date().toLocaleTimeString(),
+        timestamp: new Date().toISOString(),
       };
-
+  
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
@@ -23,20 +37,18 @@ console.log(room)
   };
 
   useEffect(() => {
-
     const fetchInitialChats = async () => {
-
-    const response = await axios.get(`${base_Url}/chats/${room}`);
-    setMessageList(response.data[0].messages);
-      
+      const response = await axios.get(`${base_Url}/chats/${room}`);
+      const initialMessages = response.data[0]?.messages || [];
+      setMessageList(initialMessages);
     };
 
-    fetchInitialChats(); 
+    fetchInitialChats();
 
     socket.on("receive_message", (data) => {
       setMessageList((list) => [...list, data]);
     });
-  }, [socket, room]);
+  }, [room,socket]);
 
   return (
     <div className="chat-window">
@@ -44,25 +56,37 @@ console.log(room)
         <p>Live Chat</p>
       </div>
       <div className="chat-body">
-      <ScrollToBottom className="message-container">
-  {messageList.map((messageContent, messageIndex) => (
-    <div
-      className="message"
-      key={messageIndex}
-      id={username === messageContent.author ? "you" : "other"}
-    >
-      <div>
-        <div className="message-content">
-          <p>{messageContent.content}</p>
-        </div>
-        <div className="message-meta">
-          <p id="time">{messageContent.timestamp}</p>
-          <p id="author">{messageContent.sender}</p>
-        </div>
-      </div>
-    </div>
-  ))}
-</ScrollToBottom>
+        <ScrollToBottom className="message-container">
+          {messageList.length > 0 ? (
+            messageList.map((messageContent, messageIndex) => (
+              <div
+                className="message"
+                key={messageIndex}
+                id={userName === messageContent.sender ? "you" : "other"}
+              >
+                <div>
+                  <div className="message-content">
+                    <p>{messageContent.content}</p>
+                  </div>
+                  <div className="message-meta">
+                    <p id="time" className="timestamp"style={{
+            color:
+              userName === messageContent.sender ? "white" : "#272829",
+          }}>
+                      {formatDate(messageContent.timestamp)}
+                    </p>
+                    <p id="author"style={{
+            color:
+              userName === messageContent.sender ? "#272829" : "white",
+          }}>{messageContent.sender}</p>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No messages available.</p>
+          )}
+        </ScrollToBottom>
       </div>
       <div className="chat-footer">
         <input
@@ -76,7 +100,7 @@ console.log(room)
             event.key === "Enter" && sendMessage();
           }}
         />
-        <button onClick={sendMessage}>&#9658;</button>
+        <button className="enter-button"onClick={sendMessage}>&#9658;</button>
       </div>
     </div>
   );

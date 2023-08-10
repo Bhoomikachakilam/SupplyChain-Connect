@@ -117,10 +117,14 @@
 // export default ManufacturerOrderForm;
 import React, { useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 import { nanoid } from "nanoid";
 import axios from "axios";
+import Navbar from "./Navbar";
+import "../css/orderForm.css";
 
 const ManufacturerOrderForm = () => {
+  const navigate = useNavigate();
   const base_url = "http://localhost:5000";
   const token = localStorage.getItem("Token");
   const decodedToken = jwtDecode(token);
@@ -158,8 +162,8 @@ const ManufacturerOrderForm = () => {
       to,
       quantity,
       pickupAddress,
-      transporterId: selectedTransporter._id, 
-      transporter: selectedTransporter.name, 
+      transporterId: selectedTransporter._id,
+      transporter: selectedTransporter.name,
     };
 
     try {
@@ -176,69 +180,87 @@ const ManufacturerOrderForm = () => {
       setFrom("");
       setTo("");
       setQuantity("");
-      setSelectedTransporterId(""); // Resetting the selected transporter
+      setSelectedTransporterId("");
+      navigate("/Manufacturerorders");
     } catch (error) {
       console.error("Error submitting order:", error);
     }
   };
 
   return (
-    <div>
-      <h2>Place an Order</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="from">From:</label>
-        <input
-          type="text"
-          id="from"
-          name="from"
-          value={from}
-          onChange={(event) => setFrom(event.target.value)}
-          required
-        />
-        <br />
+    <>
+    <Navbar link={"/Manufacturerorders"} name={"orders"} />
+    <div className="registration-form">
+      <div className="input-form" >
+        <h2 style={{textAlign:"center"}}>Place an Order</h2>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="from" className="form-label">
+            From:
+          </label>
+          <input
+            type="text"
+            id="from"
+            name="from"
+            value={from}
+            onChange={(event) => setFrom(event.target.value)}
+            className="form-input"
+            required
+          />
 
-        <label htmlFor="to">To:</label>
-        <input
-          type="text"
-          id="to"
-          name="to"
-          value={to}
-          onChange={(event) => setTo(event.target.value)}
-          required
-        />
-        <br />
+          <label htmlFor="to" className="form-label">
+            To:
+          </label>
+          <input
+            type="text"
+            id="to"
+            name="to"
+            value={to}
+            onChange={(event) => setTo(event.target.value)}
+            className="form-input"
+            required
+          />
 
-        <label htmlFor="quantity">Quantity:</label>
-        <input
-          type="text"
-          id="quantity"
-          name="quantity"
-          value={quantity}
-          onChange={(event) => setQuantity(event.target.value)}
-          required
-        />
-        <br />
+          <label htmlFor="quantity" className="form-label">
+            Quantity:
+          </label>
+          <input
+            type="text"
+            id="quantity"
+            name="quantity"
+            value={quantity}
+            onChange={(event) => setQuantity(event.target.value)}
+            className="form-input"
+            required
+          />
 
-        <label htmlFor="selectedTransporter">Transporter:</label>
-        <select
-          id="selectedTransporter"
-          name="selectedTransporter"
-          value={selectedTransporterId}
-          onChange={(event) => setSelectedTransporterId(event.target.value)}
-          required
-        >
-          <option value="">Select Transporter</option>
-          {transporters.map((t) => (
-            <option key={t.id} value={t.name}>
-              {t.name}
-            </option>
-          ))}
-        </select>
-        <br />
+          <label htmlFor="selectedTransporter" className="form-label">
+            Transporter:
+          </label>
+          <select
+            id="selectedTransporter"
+            name="selectedTransporter"
+            value={selectedTransporterId}
+            onChange={(event) => setSelectedTransporterId(event.target.value)}
+            className="form-select"
+            required
+          >
+            <option value="">Select Transporter</option>
+            {transporters.map((t) => (
+              <option key={t.id} value={t.name}>
+                {t.name}
+              </option>
+            ))}
+          </select>
 
-        <button type="submit">Submit Request</button>
-      </form>
-    </div>
+          <div className="form-button-container">
+            <button type="submit" className="form-button">
+              Submit Request
+            </button>
+          </div>
+        </form>
+      </div>
+      </div>
+      </>
   );
 };
 

@@ -1,9 +1,7 @@
 import Order from "../models/order.js"
 import user from "../models/user.js";
-import Chat from "../models/chat.js"; // Adjust the path as needed
-
-
-const createOrder = async (req, res,next) => {
+import Chat from "../models/chat.js"; 
+const createOrder = async (req, res, next) => {
   try {
     const {
       orderId,
@@ -14,7 +12,7 @@ const createOrder = async (req, res,next) => {
       transporter,
       transporterId
     } = req.body;
- 
+
     const newOrder = await Order.create({
       orderId,
       from,
@@ -27,14 +25,24 @@ const createOrder = async (req, res,next) => {
     });
 
     res.status(201).json(newOrder);
-    next()
+    next();
   } catch (error) {
     res.status(500).json({ error: 'An error occurred while creating the order.' });
   }
 };
-const getOrders = async (req, res) => {
+
+const getManufacturerOrders = async (req, res) => {
   try {
     const orders = await Order.find({ userId: req.user.userId });
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: 'An error occurred while fetching orders.' });
+  }
+};
+const getTransporterOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ transporterId: req.user.userId });
     res.status(200).json(orders);
   } catch (error) {
     console.error("Error fetching orders:", error);
@@ -62,4 +70,4 @@ const getTransporters = async (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching transporters.' });
   }
 };
-export { createOrder,getTransporters ,getOrders,getChats}
+export { createOrder,getTransporters ,getManufacturerOrders,getChats,getTransporterOrders}

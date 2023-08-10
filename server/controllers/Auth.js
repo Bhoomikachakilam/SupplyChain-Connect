@@ -42,7 +42,7 @@ const login = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-    const tokenpayload=  { userId: existingUser._id, email: existingUser.email,address:existingUser.address }
+    const tokenpayload=  { userId: existingUser._id, userName: existingUser.name,address:existingUser.address,role:existingUser.role }
     const accessToken = jwt.sign(
     tokenpayload,
       process.env.JWT_SECRET,

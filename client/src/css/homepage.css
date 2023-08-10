@@ -1,0 +1,54 @@
+
+.empHeading{
+    text-align: left;
+    background: -webkit-linear-gradient(45deg,#b7babd,#61677A);
+    font-family: 'Jost', sans-serif;
+     -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 2%;
+  /* font-weight: 900;  */
+  width: 325px;
+
+  cursor: pointer;
+}
+.login-button{
+     margin-right:4%; 
+    /* margin-top: 1.3%; */
+}
+.login-button>*{
+   
+    color: white; 
+    border-radius: 15px;
+    
+}
+.login-button>*:hover{
+    transition: 0.5s ease;
+    transform: translateY(-3px);
+}
+.login-button > * + * {
+  margin-left: 1rem;
+}
+.NavBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  width: 99.3%;
+   padding:0.3%;   
+   border-radius: 2%;
+  background-color: black;
+  color: white;
+ 
+}
+
+.NavBar a {
+  color:white;
+  text-decoration: none;
+   padding: 12%; 
+  border-radius: 15px;
+  /* background-color: #d2d8de; */
+  transition: 0.5s ease;
+}
+
+.NavBar a:hover {
+  transform: translateY(-3px);
+}

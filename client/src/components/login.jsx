@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import axios from "axios"; 
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode"
 const Loginform = () => {
-  const base_url = "http://localhost:5000"; 
-  const [email,setEmail]=useState("")
+  const navigate=useNavigate()
+  const base_url = "http://localhost:5000";
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -21,16 +24,19 @@ const Loginform = () => {
       email,
       password,
     };
-
     try {
       const response = await axios.post(`${base_url}/login`, loginData);
 
       if (response.status === 200) {
-         localStorage.setItem("Token",response.data.accessToken);
-        setEmail("")
-        setPassword("")
+        localStorage.setItem("Token", response.data.accessToken);
+        setEmail("");
+        setPassword("");
+        const token=localStorage.getItem("Token")
+        const decodedToken = jwtDecode(token);
+        const userRole = decodedToken.role;
+        navigate(`/${userRole}orders`); 
       } else {
-        console.error("Login failed");
+        console.log("Login failed");
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -39,33 +45,35 @@ const Loginform = () => {
 
   return (
     <div className="registration-form">
-      <div className="input-form">
         <h2 style={{ textAlign: "center" }}>Login</h2>
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Email:</label>
+          <div className="input-icons">
+
             <input
               type="text"
+              placeholder="Email"
               value={email}
               onChange={handleEmailChange}
               required
+              className="styled-input"
             />
           </div>
-          <div className="input-group">
-            <label>Password:</label>
+          <div className="input-icons">
             <input
               type="password"
+              placeholder="Password"
               value={password}
               onChange={handlePasswordChange}
               required
+              className="styled-input"
             />
-          </div>
-          <div className="button-group">
-            <button type="submit">Login</button>
+        </div>
+          <div className="styled-button" style={{ textAlign: "center" }}>
+            <button type="submit" id="button-group">Login</button>
           </div>
         </form>
       </div>
-    </div>
+   
   );
 };
 

@@ -32,24 +32,27 @@ io.on("connection", (socket) => {
   });
   socket.on("send_message", async (data) => {
     try {
-      socket.to(data.room).emit("receive_message", data)
       let chat = await Chat.findOne({ order: data.room });
       if (!chat) {
         chat = await Chat.create({ order: data.room, messages: [] });
       }
       const newMessage = {
         sender: data.sender,
-        content: data.cotent,
+        content: data.content,
         timestamp: new Date(),
       };
       chat.messages.push(newMessage);
-      await chat.save()
+      await chat.save();
+  
+      // Broadcast the message to the room
+      io.to(data.room).emit("receive_message", newMessage);
+  
       console.log("Message sent and saved:", newMessage);
     } catch (error) {
       console.error("Error sending message:", error);
     }
   });
-
+  
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   });

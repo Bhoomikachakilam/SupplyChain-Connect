@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import "../css/registration.css";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../css/registration.css";
+import Navbar from "./Navbar";
 const RegistrationForm = () => {
+  const navigate = useNavigate();
   const base_url = "http://localhost:5000";
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -9,6 +12,7 @@ const RegistrationForm = () => {
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
@@ -16,9 +20,11 @@ const RegistrationForm = () => {
   const handleAddressChange = (event) => {
     setAddress(event.target.value);
   };
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
+
   const handlePhoneNumberChange = (event) => {
     setPhoneNumber(event.target.value);
   };
@@ -46,7 +52,6 @@ const RegistrationForm = () => {
         `${base_url}/register`,
         registrationData
       );
-      console.log("Response data:", response.data);
 
       if (response.status === 201) {
         console.log("Registration successful");
@@ -56,6 +61,7 @@ const RegistrationForm = () => {
         setPhoneNumber("");
         setRole("");
         setPassword("");
+        navigate("/")
       } else {
         console.error("Registration failed");
       }
@@ -63,72 +69,89 @@ const RegistrationForm = () => {
       console.error("An error occurred:", error);
     }
   };
-
   return (
+    <>
+      <Navbar link={ "/"} name={"Login"} />
     <div className="registration-form">
       <div className="input-form">
         <h2 style={{ textAlign: "center" }}>Registration Form</h2>
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Name:</label>
+          <div className="input-group input-icons">
+          
             <input
               type="text"
+              placeholder="Name"
               value={name}
               onChange={handleNameChange}
               required
+              className="styled-input"
             />
           </div>
-          <div className="input-group">
-            <label>Email:</label>
+          <div className="input-group input-icons">
+            <i className="fas fa-envelope icon"></i>
             <input
               type="text"
+              placeholder="Email"
               value={email}
               onChange={handleEmailChange}
               required
+              className="styled-input"
             />
           </div>
-          <div className="input-group">
-            <label>Password:</label>
+          <div className="input-group input-icons">
             <input
               type="password"
+              placeholder="Password"
               value={password}
               onChange={handlePasswordChange}
               required
+              className="styled-input"
             />
           </div>
-          <div className="input-group">
-            <label>Address:</label>
+          <div className="input-group input-icons">
+          
             <input
               type="text"
+              placeholder="Address"
               value={address}
               onChange={handleAddressChange}
               required
+              className="styled-input"
             />
           </div>
-          <div className="input-group">
-            <label>Phone Number:</label>
+          <div className="input-group input-icons">
+          
             <input
               type="tel"
+              placeholder="Phone Number"
               value={phoneNumber}
               onChange={handlePhoneNumberChange}
               required
+              className="styled-input"
             />
           </div>
-          <div className="input-group">
-            <label>Role:</label>
-            <select value={role} onChange={handleRoleChange} required>
+          <div className="input-group input-icons">
+      
+            <select
+              value={role}
+              onChange={handleRoleChange}
+              required
+              className="styled-select"
+            >
               <option value="">Select Role</option>
               <option value="Manufacturer">Manufacturer</option>
               <option value="Transporter">Transporter</option>
             </select>
           </div>
-          <div className="button-group">
-            <button type="submit">Register</button>
+           <div className="styled-button" style={{ textAlign: "center" }}>
+            <button className="button-group"type="submit">Register</button>
           </div>
         </form>
       </div>
-    </div>
+      </div>
+      </>
   );
 };
+
 
 export default RegistrationForm;
