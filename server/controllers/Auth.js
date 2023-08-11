@@ -19,7 +19,7 @@ const register = async (req, res) => {
       phoneNumber,
       role,
     });
-    console.log(newUser);
+
     res
       .status(201)
       .json({ message: "Registration successful", user: newUser });
@@ -48,7 +48,7 @@ const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" } 
     );
-    console.log(accessToken)
+  
     res.status(200).json({
       message: "Login successful",
       user: existingUser,

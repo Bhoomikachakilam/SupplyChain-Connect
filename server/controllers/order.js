@@ -10,7 +10,8 @@ const createOrder = async (req, res, next) => {
       quantity,
       pickupAddress,
       transporter,
-      transporterId
+      transporterId,
+      manufacturer
     } = req.body;
 
     const newOrder = await Order.create({
@@ -20,6 +21,7 @@ const createOrder = async (req, res, next) => {
       quantity,
       pickupAddress,
       transporter,
+      manufacturer,
       userId: req.user.userId,
       transporterId
     });

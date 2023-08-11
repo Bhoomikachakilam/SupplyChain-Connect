@@ -6,6 +6,7 @@ const orderSchema = new mongoose.Schema({
   quantity: { type: String, required: true },
   pickupAddress: { type: String, required: true },
   transporter: { type: String, required: true },
+  manufacturer:{ type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   transporterId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 });

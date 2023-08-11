@@ -1,5 +1,4 @@
 
-
 .order-list {
   display: flex;
   flex-direction: column;
@@ -29,7 +28,7 @@
 }
 
 .chat-button {
-  margin-top: auto; /* Push the button to the bottom */
+  margin-top: auto;
   padding: 8px 16px;
   background-color: #272829;
   color: white;
@@ -43,4 +42,35 @@
 .chat-button:hover {
   background-color: #000408;
   transform: translateY(-3px);
+}.search-bar {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  margin: 20px auto;
 }
+
+.search-bar input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-right: 10px;
+}
+
+.search-button {
+  padding: 8px 16px;
+  background-color: #272829;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.search-button:hover {
+  background-color: #000408;
+  transform: translateY(-3px);
+}
+
+

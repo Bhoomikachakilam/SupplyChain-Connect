@@ -5,7 +5,8 @@ import "../css/registration.css";
 import Navbar from "./Navbar";
 const RegistrationForm = () => {
   const navigate = useNavigate();
-  const base_url = "https://supplychain-connect.onrender.com";
+ const base_url = "https://supplychain-connect.onrender.com";
+  // const base_url = "http://localhost:5000";
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");

@@ -18,7 +18,7 @@ const App = () => {
     userRole = decodedToken.role;
     userName = decodedToken.userName;
   } catch (error) {
-    // Handle token decoding error here
+   console.log(error)
   }
 
   return (
@@ -28,7 +28,7 @@ const App = () => {
 
       {userRole === 'Manufacturer' && (
         <>
-          <Route path="/orderform" element={<Orderform />} />
+          <Route path="/orderform" element={<Orderform userName={ userName} />} />
           <Route path="/Manufacturerorders" element={<ManufacturerOrderList />} />
         </>
       )}
