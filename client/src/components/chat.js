@@ -49,7 +49,7 @@ function Chat({ socket, userName, room }) {
     socket.on("receive_message", (data) => {
       setMessageList((list) => [...list, data]);
     });
-  }, [room,socket]);
+  }, [room,messageList]);
 
   return (
     <div className="chat-window">
