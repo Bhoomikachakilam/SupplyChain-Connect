@@ -29,7 +29,6 @@ function Chat({ socket, userName, room }) {
       };
       await socket.emit("send_message", messageData);
       setCurrentMessage("");
-      setMessageList((list) => [...list, messageData]);
     }
   };
   useEffect(() => {
@@ -41,17 +40,17 @@ function Chat({ socket, userName, room }) {
     fetchInitialChats();
   }, [room]);
 
-  // useEffect(() => {
-  //   const handleReceiveMessage = (data) => {
-  //     setMessageList((list) => [...list, data]);
-  //   };
+  useEffect(() => {
+    const handleReceiveMessage = (data) => {
+      setMessageList((list) => [...list, data]);
+    };
 
-  //   socket.on("receive_message", handleReceiveMessage);
+    socket.on("receive_message", handleReceiveMessage);
 
-  //   return () => {
-  //     socket.off("receive_message", handleReceiveMessage);
-  //   };
-  // }, [socket]);
+    return () => {
+      socket.off("receive_message", handleReceiveMessage);
+    };
+  }, [socket]);
 
   return (
     <div className="chat-window">
