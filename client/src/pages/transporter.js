@@ -5,8 +5,8 @@ import "../css/orderList.css";
 
 const OrderList = () => {
   const navigate = useNavigate();
-  const base_url = "http://localhost:5000";
-  // const base_url = "https://supplychain-connect.onrender.com";
+  // const base_url = "http://localhost:5000";
+  const base_url = "https://supplychain-connect.onrender.com";
   const [orders, setOrders] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredOrders, setFilteredOrders] = useState([]);

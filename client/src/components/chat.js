@@ -3,8 +3,8 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import axios from "axios";
 import "../css/chat.css";
 function Chat({ socket, userName, room }) {
-  // const base_Url = "https://supplychain-connect.onrender.com";
- const base_Url = "http://localhost:5000";
+  const base_Url = "https://supplychain-connect.onrender.com";
+//  const base_Url = "http://localhost:5000";
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const formatDate = (dateString) => {
