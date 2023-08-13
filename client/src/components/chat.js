@@ -3,13 +3,10 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import axios from "axios";
 import "../css/chat.css";
 function Chat({ socket, userName, room }) {
-  const base_Url = "https://supplychain-connect.onrender.com";
-  // const base_Url = "http://localhost:5000";
+  // const base_Url = "https://supplychain-connect.onrender.com";
+ const base_Url = "http://localhost:5000";
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-  
-
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
@@ -30,26 +27,30 @@ function Chat({ socket, userName, room }) {
         content: currentMessage,
         timestamp: new Date().toISOString(),
       };
-  
       await socket.emit("send_message", messageData);
-      setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }
   };
-
   useEffect(() => {
     const fetchInitialChats = async () => {
       const response = await axios.get(`${base_Url}/chats/${room}`);
       const initialMessages = response.data[0]?.messages || [];
       setMessageList(initialMessages);
     };
-
     fetchInitialChats();
+  }, [room]);
 
-    socket.on("receive_message", (data) => {
+  useEffect(() => {
+    const handleReceiveMessage = (data) => {
       setMessageList((list) => [...list, data]);
-    });
-  }, [room,messageList]);
+    };
+
+    socket.on("receive_message", handleReceiveMessage);
+
+    return () => {
+      socket.off("receive_message", handleReceiveMessage);
+    };
+  }, [socket]);
 
   return (
     <div className="chat-window">
@@ -70,16 +71,29 @@ function Chat({ socket, userName, room }) {
                     <p>{messageContent.content}</p>
                   </div>
                   <div className="message-meta">
-                    <p id="time" className="timestamp"style={{
-            color:
-              userName === messageContent.sender ? "white" : "#272829",
-          }}>
+                    <p
+                      id="time"
+                      className="timestamp"
+                      style={{
+                        color:
+                          userName === messageContent.sender
+                            ? "white"
+                            : "#272829",
+                      }}
+                    >
                       {formatDate(messageContent.timestamp)}
                     </p>
-                    <p id="author"style={{
-            color:
-              userName === messageContent.sender ? "#272829" : "white",
-          }}>{messageContent.sender}</p>
+                    <p
+                      id="author"
+                      style={{
+                        color:
+                          userName === messageContent.sender
+                            ? "#272829"
+                            : "white",
+                      }}
+                    >
+                      {messageContent.sender}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -101,7 +115,9 @@ function Chat({ socket, userName, room }) {
             event.key === "Enter" && sendMessage();
           }}
         />
-        <button className="enter-button"onClick={sendMessage}>&#9658;</button>
+        <button className="enter-button" onClick={sendMessage}>
+          &#9658;
+        </button>
       </div>
     </div>
   );

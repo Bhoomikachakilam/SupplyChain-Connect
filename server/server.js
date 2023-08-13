@@ -19,8 +19,8 @@ app.use(orderrouter);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://supplychainconnect.onrender.com",
-    // origin: "http://localhost:3000",
+    // origin: "https://supplychainconnect.onrender.com",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
@@ -31,28 +31,30 @@ io.on("connection", (socket) => {
     socket.join(data);
     console.log(`User with ID: ${socket.id} joined room: ${data}`);
   });
-  socket.on("send_message", async (data) => {
-    try {
-      let chat = await Chat.findOne({ order: data.room });
-      if (!chat) {
-        chat = await Chat.create({ order: data.room, messages: [] });
-      }
-      const newMessage = {
-        sender: data.sender,
-        content: data.content,
-        timestamp: new Date(),
-      };
-      chat.messages.push(newMessage);
-      await chat.save();
 
-      io.to(data.room).emit("receive_message", newMessage);
-  
-      console.log("Message sent and saved:", newMessage);
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
-  });
-  
+
+socket.on("send_message", async (data) => {
+  try {
+    let chat = await Chat.findOneAndUpdate(
+      { order: data.room },
+      {
+        $push: {
+          messages: {
+            sender: data.sender,
+            content: data.content,
+            timestamp: new Date(),
+          },
+        },
+      },
+      { upsert: true, new: true }
+    );
+
+    io.to(data.room).emit("receive_message", chat.messages[chat.messages.length - 1]);
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
+});
+
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   });

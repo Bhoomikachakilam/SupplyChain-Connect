@@ -6,9 +6,8 @@ import Chat from "./chat";
 const ChatPage = ({userName}) => {
 
   const { roomId } = useParams();
-  const socket = io.connect("https://supplychain-connect.onrender.com"); 
-  // const socket = io.connect( "http://localhost:5000"); 
-
+  // const socket = io.connect("https://supplychain-connect.onrender.com"); 
+  const socket = io.connect( "http://localhost:5000"); 
   useEffect(() => {
     socket.emit("join_room", roomId);
   }, [roomId]);
